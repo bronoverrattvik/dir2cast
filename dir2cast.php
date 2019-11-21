@@ -443,7 +443,6 @@ class RSS_Item extends GetterSetter {
             'title' => $this->getTitle(),
             //'link' => $this->getLink(), // TODO fetch link from ID3 instead
             'pubDate' => $this->getID3Year() && strlen($this->getID3Year()) == strlen('YYYY-MM-DD') ? date('r', strtotime($this->getID3Year() . "12:00:00")) : $this->getPubDate(),
-            'guid' => $this->getGUID(),
         );
 
         if(DESCRIPTION_SOURCE == 'file')
@@ -463,6 +462,10 @@ class RSS_Item extends GetterSetter {
             $item_element->appendChild( new DOMElement($name) )
                 ->appendChild(new DOMText($val));
         }
+
+        $c = $item_element->appendChild( $doc->createElement('guid') );
+        $c->appendChild(new DOMText($this->getGUID()));
+        $c->setAttribute('isPermalink', "false");
 
         foreach($cdata_item_elements as $name => $val)
         {
