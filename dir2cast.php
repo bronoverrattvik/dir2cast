@@ -195,8 +195,14 @@ class getID3_Podcast_Helper implements Podcast_Helper {
                     $item->setID3Year( $info['comments']['year'][0] );
             }
 
-            if(!empty($info['playtime_string']))
-                $item->setDuration( $info['playtime_string'] );
+
+            if(!empty($info['playtime_string'])) {
+                $playtime = $info['playtime_string'];
+                if (strlen($playtime) <= 5) {
+                    $playtime = "00:" . $playtime;
+                }
+                $item->setDuration(date("H:i:s", strtotime($playtime)));
+            }
 
             $item->setAnalyzed(true);
             unset($this->getid3);
