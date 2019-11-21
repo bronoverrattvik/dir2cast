@@ -309,6 +309,7 @@ class iTunes_Podcast_Helper extends GetterSetter implements Podcast_Helper {
         $elements = array(
             'author' => $item->getID3Artist(),
             'duration' => $item->getDuration(),
+            'explicit' => 'yes',
             //'keywords' => 'not supported yet.'
         );
 
@@ -341,6 +342,8 @@ class iTunes_Podcast_Helper extends GetterSetter implements Podcast_Helper {
             $item_element->appendChild( $doc->createElement('itunes:image') )
                 ->setAttribute('href', $item_image);
         }
+
+
     }
 
     public function appendCategory($category, $subcats, DOMElement $e, DOMDocument $doc)
@@ -1498,6 +1501,8 @@ if(!defined('NO_DISPATCHER'))
         $itunes->setOwnerEmail(ITUNES_OWNER_EMAIL);
 
         $itunes->addCategories(ITUNES_CATEGORIES);
+
+        $itunes->setExplicit("yes");
 
         $podcast->setGenerator(GENERATOR);
     }
