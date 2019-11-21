@@ -175,8 +175,16 @@ class getID3_Podcast_Helper implements Podcast_Helper {
 
             if(!empty($info['comments']))
             {
-                if(!empty($info['comments']['title'][0]))
-                    $item->setID3Title( $info['comments']['title'][0] );
+                if(!empty($info['comments']['title'][0])) {
+                    if (!empty($info['comments']['track'][0])) {
+                        $item->setID3Title(sprintf("%02d. %s",
+                                                    $info['comments']['track'][0],
+                                                    $info['comments']['title'][0]
+                        ));
+                    } else {
+                        $item->setID3Title( $info['comments']['title'][0] );
+                    }
+                }
                 if(!empty($info['comments']['artist'][0]))
                     $item->setID3Artist( $info['comments']['artist'][0] );
                 if(!empty($info['comments']['album'][0]))
