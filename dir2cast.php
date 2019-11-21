@@ -757,6 +757,10 @@ abstract class Podcast extends GetterSetter
                 ->appendChild(new DOMText($val));
         }
 
+        $c = $channel->appendChild( $doc->createElement('guid') );
+        $c->appendChild(new DOMText($this->getGUID()));
+        $c->setAttribute('isPermalink', "false");
+
         $this->appendImage($channel);
 
         foreach($this->helpers as $helper)
@@ -1388,6 +1392,9 @@ class SettingsHandler
         if(!defined('ITUNES_OWNER_EMAIL'))
             define('ITUNES_OWNER_EMAIL', '');
 
+        if(!defined('GUID'))
+            define('GUID', '');
+
         if(!defined('WEBMASTER'))
         {
             if(ITUNES_OWNER_NAME != '' and ITUNES_OWNER_EMAIL != '')
@@ -1503,6 +1510,7 @@ if(!defined('NO_DISPATCHER'))
         $podcast->setWebMaster(WEBMASTER);
         $podcast->setTtl(TTL);
         $podcast->setImage(IMAGE);
+        $podcast->setGUID(GUID);
 
         $atom->setSelfLink(RSS_LINK);
 
