@@ -441,7 +441,7 @@ class RSS_Item extends GetterSetter {
 
         $item_elements = array(
             'title' => $this->getTitle(),
-            'link' => $this->getLink(),
+            //'link' => $this->getLink(), // TODO fetch link from ID3 instead
             'pubDate' => $this->getID3Year() && strlen($this->getID3Year()) == strlen('YYYY-MM-DD') ? date('r', strtotime($this->getID3Year() . "12:00:00")) : $this->getPubDate()
         );
 
