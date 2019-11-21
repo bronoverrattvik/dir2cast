@@ -442,7 +442,8 @@ class RSS_Item extends GetterSetter {
         $item_elements = array(
             'title' => $this->getTitle(),
             //'link' => $this->getLink(), // TODO fetch link from ID3 instead
-            'pubDate' => $this->getID3Year() && strlen($this->getID3Year()) == strlen('YYYY-MM-DD') ? date('r', strtotime($this->getID3Year() . "12:00:00")) : $this->getPubDate()
+            'pubDate' => $this->getID3Year() && strlen($this->getID3Year()) == strlen('YYYY-MM-DD') ? date('r', strtotime($this->getID3Year() . "12:00:00")) : $this->getPubDate(),
+            'guid' => $this->getGUID(),
         );
 
         if(DESCRIPTION_SOURCE == 'file')
@@ -622,6 +623,12 @@ class Media_RSS_Item extends RSS_File_Item {
         }
         if($this->getID3Title()) $title_parts[] = $this->getID3Title();
         return implode(' - ', $title_parts);
+    }
+
+    public function getGUID()
+    {
+        $title = $this->getTitle();
+        return urlencode($title) . "-" . md5($title);
     }
 
     public function getType()
