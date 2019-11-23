@@ -360,8 +360,9 @@ class iTunes_Podcast_Helper extends GetterSetter implements Podcast_Helper {
 
             $item_element->appendChild( $doc->createElement('itunes:' . $name) )
                 ->appendChild( $doc->createCDATASection(
+                    $val)
                     // reintroduce newlines as <br />.
-                    nl2br($val))
+                    //nl2br($val))
                 );
         }
 
@@ -491,8 +492,9 @@ class RSS_Item extends GetterSetter {
 
             $item_element->appendChild( new DOMElement($name) )
                 ->appendChild( $doc->createCDATASection(
+                    $val)
                     // reintroduce newlines as <br />.
-                    nl2br($val))
+                    //nl2br($val))
                 );
         }
 
