@@ -657,6 +657,10 @@ class Media_RSS_Item extends RSS_File_Item {
 
     public function getDescription()
     {
+        require_once __DIR__ . './vendor/autoload.php';
+        $Parsedown = new Parsedown();
+
+        return $Parsedown->text($this->getID3Comment());
         return $this->getID3Comment();
     }
 
