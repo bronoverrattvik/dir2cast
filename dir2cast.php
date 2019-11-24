@@ -465,7 +465,7 @@ class RSS_Item extends GetterSetter {
         if(DESCRIPTION_SOURCE == 'file')
             $description = $this->getSummary();
         else
-            $description = $this->getDescription();
+            $description = $this->getDescriptionAsHTML();
 
         $cdata_item_elements = array(
             'description' => $description
@@ -659,11 +659,15 @@ class Media_RSS_Item extends RSS_File_Item {
 
     public function getDescription()
     {
+        return $this->getID3Comment();
+    }
+
+    public function getDescriptionAsHTML()
+    {
         require_once __DIR__ . './vendor/autoload.php';
         $Parsedown = new Parsedown();
 
-        return $Parsedown->text($this->getID3Comment());
-        return $this->getID3Comment();
+        return $Parsedown->text($this->getDescription());
     }
 
     public function getSummary()
