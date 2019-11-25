@@ -465,11 +465,12 @@ class RSS_Item extends GetterSetter {
         if(DESCRIPTION_SOURCE == 'file')
             $description = $this->getSummary();
         else
-            $description = $this->getDescriptionAsHTML();
+            $description = $this->getDescriptionAsPlainText();
 
-        $cdata_item_elements = array(
-            'description' => $description
-        );
+        $cdata_item_elements = [
+            'description' => $description,
+            'content:encoded' => $this->getDescriptionAsHTML(),
+        ];
 
         if(empty($item_elements['title']))
             $item_elements['title'] = '(untitled)';
@@ -490,7 +491,8 @@ class RSS_Item extends GetterSetter {
                 if(!defined('DESCRIPTION_HTML'))
                     $val = htmlspecialchars($val);
 
-            $item_element->appendChild( new DOMElement($name) )
+            $de = $name === 'content:encoded' ? new DOMElement($name, '', "http://purl.org/rss/1.0/modules/content/") : new DOMElement($name);
+            $item_element->appendChild( $de )
                 ->appendChild( $doc->createCDATASection(
                     $val)
                     // reintroduce newlines as <br />.
@@ -662,6 +664,11 @@ class Media_RSS_Item extends RSS_File_Item {
         return $this->getID3Comment();
     }
 
+    public function getDescriptionAsPlainText()
+    {
+        return strip_tags($this->getDescriptionAsHTML());
+    }
+
     public function getDescriptionAsHTML()
     {
         require_once __DIR__ . './vendor/autoload.php';
@@ -769,6 +776,11 @@ abstract class Podcast extends GetterSetter
         // we do not show the default xmlns. Seems to break the validator.
         // $rss->appendChild( $doc->createAttribute( 'xmlns' ) )
         //  ->appendChild( new DOMText( $this->getNSURI() ) );
+
+        // prerequisite for using content:encoded
+        // http://www.rssboard.org/rss-profile#namespace-elements-content-encoded
+        $rss->appendChild( $doc->createAttribute( 'xmlns' ) )
+            ->appendChild( new DOMText( "http://purl.org/rss/1.0/modules/content/" ) );
 
         foreach($this->helpers as $helper)
             $helper->addNamespaceTo($rss, $doc);
