@@ -779,7 +779,7 @@ abstract class Podcast extends GetterSetter
 
         // prerequisite for using content:encoded
         // http://www.rssboard.org/rss-profile#namespace-elements-content-encoded
-        $rss->appendChild( $doc->createAttribute( 'xmlns' ) )
+        $rss->appendChild( $doc->createAttribute( 'xmlns:dc' ) )
             ->appendChild( new DOMText( "http://purl.org/rss/1.0/modules/content/" ) );
 
         foreach($this->helpers as $helper)
