@@ -483,7 +483,7 @@ class RSS_Item extends GetterSetter {
 
         $c = $item_element->appendChild( $doc->createElement('guid') );
         $c->appendChild(new DOMText($this->getGUID()));
-        $c->setAttribute('isPermalink', "false");
+        $c->setAttribute('isPermaLink', "false");
 
         foreach($cdata_item_elements as $name => $val)
         {
@@ -807,7 +807,7 @@ abstract class Podcast extends GetterSetter
 
         $c = $channel->appendChild( $doc->createElement('guid') );
         $c->appendChild(new DOMText($this->getGUID()));
-        $c->setAttribute('isPermalink', "false");
+        $c->setAttribute('isPermaLink', "false");
 
         $this->appendImage($channel);
 
