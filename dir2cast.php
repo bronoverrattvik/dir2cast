@@ -327,16 +327,13 @@ class iTunes_Podcast_Helper extends GetterSetter implements Podcast_Helper {
             //'keywords' => 'not supported yet.'
         );
 
-        $cdata_item_elements = [];
         // iTunes summary is excluded if it's empty, because the default is to
         // duplicate what's in the "description field", but iTunes will fall back
         // to showing the <description> if there is no summary anyway.
-        $itunes_summary = $item->getSummary();
+        $itunes_summary = $item->getDescriptionAsPlainText();
         if($itunes_summary !== '')
         {
-            $cdata_item_elements = [
-                'summary' => $itunes_summary,
-            ];
+            $elements['summary'] = $itunes_summary . "\n\n(itunes:summary)";
         }
 
         // iTunes subtitle is excluded if it's empty. iTunes will fall back to
@@ -351,20 +348,6 @@ class iTunes_Podcast_Helper extends GetterSetter implements Podcast_Helper {
             if(!empty($val))
                 $item_element->appendChild( $doc->createElement('itunes:' . $key) )
                     ->appendChild( new DOMText($val) );
-
-        foreach($cdata_item_elements as $name => $val)
-        {
-            if($name == 'summary')
-                if(!defined('DESCRIPTION_HTML'))
-                    $val = htmlspecialchars($val);
-
-            $item_element->appendChild( $doc->createElement('itunes:' . $name) )
-                ->appendChild( $doc->createCDATASection(
-                    $val)
-                    // reintroduce newlines as <br />.
-                    //nl2br($val))
-                );
-        }
 
         // Look to see if there is a item specific image and include it.
         $item_image = $item->getImage();
@@ -468,8 +451,8 @@ class RSS_Item extends GetterSetter {
             $description = $this->getDescriptionAsPlainText();
 
         $cdata_item_elements = [
-            'description' => $description,
-            'content:encoded' => $this->getDescriptionAsHTML(),
+            'description' => $description . "\n\n(description)",
+            'content:encoded' => $this->getDescriptionAsHTML() . "\n\n(content:encoded)",
         ];
 
         if(empty($item_elements['title']))
