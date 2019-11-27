@@ -448,7 +448,7 @@ class RSS_Item extends GetterSetter {
         if(DESCRIPTION_SOURCE == 'file')
             $description = $this->getSummary();
         else
-            $description = $this->getDescriptionAsPlainText();
+            $description = $this->getDescriptionAsHTML();
 
         $cdata_item_elements = [
             'description' => $description . "\n\n(description)",
