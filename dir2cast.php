@@ -649,7 +649,7 @@ class Media_RSS_Item extends RSS_File_Item {
 
     public function getDescriptionAsPlainText()
     {
-        return strip_tags($this->getDescriptionAsHTML());
+        return htmlspecialchars_decode(strip_tags($this->getDescriptionAsHTML()));
     }
 
     public function getDescriptionAsHTML()
