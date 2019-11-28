@@ -333,7 +333,7 @@ class iTunes_Podcast_Helper extends GetterSetter implements Podcast_Helper {
         $itunes_summary = $item->getDescriptionAsPlainText();
         if($itunes_summary !== '')
         {
-            $elements['summary'] = $itunes_summary . "\n\n(itunes:summary)";
+            $elements['summary'] = $itunes_summary;
         }
 
         // iTunes subtitle is excluded if it's empty. iTunes will fall back to
@@ -451,8 +451,8 @@ class RSS_Item extends GetterSetter {
             $description = $this->getDescriptionAsHTML();
 
         $cdata_item_elements = [
-            'description' => $description . "\n\n(description)",
-            'content:encoded' => $this->getDescriptionAsHTML() . "\n\n(content:encoded)",
+            'description' => $description,
+            'content:encoded' => $this->getDescriptionAsHTML(),
         ];
 
         if(empty($item_elements['title']))
