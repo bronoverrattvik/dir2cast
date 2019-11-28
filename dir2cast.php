@@ -751,6 +751,10 @@ abstract class Podcast extends GetterSetter
         $doc = new DOMDocument('1.0', 'UTF-8');
         $doc->formatOutput = true;
 
+        if (defined('XSLT_URL')) {
+            $xslt = $doc->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="' . XSLT_URL . '"');
+            $doc->appendChild($xslt);
+        }
 
         $rss = $doc->createElement('rss');
         $doc->appendChild($rss);
