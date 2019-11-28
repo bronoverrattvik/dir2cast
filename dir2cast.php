@@ -658,8 +658,6 @@ class Media_RSS_Item extends RSS_File_Item {
 
     public function getDescriptionAsHTML()
     {
-        $Parsedown = new Parsedown();
-
         return Markdown::defaultTransform($this->getDescription());
     }
 
