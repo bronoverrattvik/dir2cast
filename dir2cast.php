@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__ . './vendor/autoload.php';
+use Michelf\Markdown;
+
 /******************************************************************************
  * Copyright (c) 2008-2018, Ben XO (me@ben-xo.com).
  *
@@ -655,10 +658,9 @@ class Media_RSS_Item extends RSS_File_Item {
 
     public function getDescriptionAsHTML()
     {
-        require_once __DIR__ . './vendor/autoload.php';
         $Parsedown = new Parsedown();
 
-        return str_replace('</p>', "</p>\n", $Parsedown->text($this->getDescription()));
+        return Markdown::defaultTransform($this->getDescription());
     }
 
     public function getSummary()
