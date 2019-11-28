@@ -452,7 +452,7 @@ class RSS_Item extends GetterSetter {
 
         $cdata_item_elements = [
             'description' => $description,
-            'content:encoded' => $this->getDescriptionAsHTML(),
+            //'content:encoded' => $this->getDescriptionAsHTML(),
         ];
 
         if(empty($item_elements['title']))
@@ -474,7 +474,8 @@ class RSS_Item extends GetterSetter {
                 if(!defined('DESCRIPTION_HTML'))
                     $val = htmlspecialchars($val);
 
-            $de = $name === 'content:encoded' ? new DOMElement($name, '', "http://purl.org/rss/1.0/modules/content/") : new DOMElement($name);
+            //$de = $name === 'content:encoded' ? new DOMElement($name, '', "http://purl.org/rss/1.0/modules/content/") : new DOMElement($name);
+            $de = new DOMElement($name);
             $item_element->appendChild( $de )
                 ->appendChild( $doc->createCDATASection(
                     $val)
