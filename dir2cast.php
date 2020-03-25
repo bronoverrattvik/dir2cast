@@ -599,12 +599,14 @@ class RSS_File_Item extends RSS_Item {
      */
     public function getImage()
     {
-        $image_file_name = dirname($this->getFilename()) . '/' . basename($this->getFilename(), '.' . $this->getExtension()) . '.jpg';
-        if(file_exists( $image_file_name ))
-            return $image_file_name;
-        $image_file_name = dirname($this->getFilename()) . '/' . basename($this->getFilename(), '.' . $this->getExtension()) . '.png';
-        if(file_exists( $image_file_name ))
-            return $image_file_name;
+        foreach(['jpg', 'png'] as $imageExtension) {
+            $image_file_name = dirname($this->getFilename()) . '/' . basename($this->getFilename(), '.' . $this->getExtension()) . '.' . $imageExtension;
+            if (file_exists( $image_file_name )) {
+                return rtrim(MP3_URL, '/') . '/' . str_replace('%2F', '/', rawurlencode($this->stripBasePath($image_file_name)));
+            }
+        }
+
+        return null;
     }
 }
 
