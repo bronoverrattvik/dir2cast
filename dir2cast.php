@@ -179,9 +179,10 @@ class getID3_Podcast_Helper implements Podcast_Helper {
             if(!empty($info['comments']))
             {
                 if(!empty($info['comments']['title'][0])) {
-                    if (!empty($info['comments']['track'][0])) {
+                    $trackNr = $info['comments']['track'][0] ?? $info['comments']['track_number'][0] ?? false;
+                    if ($trackNr) {
                         $item->setID3Title(sprintf("%02d. %s",
-                                                    $info['comments']['track'][0],
+                                                    $trackNr,
                                                     $info['comments']['title'][0]
                         ));
                     } else {
