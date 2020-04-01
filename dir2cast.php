@@ -814,6 +814,10 @@ abstract class Podcast extends GetterSetter
             $item->appendToChannel($channel, $doc);
         }
 
+        if(SORT_ITEMS_BY_PUBDATE) {
+            $this->sortItemsByPubDate($doc);
+        }
+
         $this->post_generate($doc);
 
         $doc->normalizeDocument();
@@ -853,6 +857,29 @@ abstract class Podcast extends GetterSetter
     protected function pre_generate() { }
     protected function post_generate(DOMDocument $doc) { }
 
+    protected function sortItemsByPubDate(DOMDocument $doc)
+    {
+        //https://stackoverflow.com/a/35974088/1109380
+
+        $items = $doc->getElementsByTagName('item');
+
+        $sorted = iterator_to_array( $items );
+        //var_dump("---");
+        usort($sorted, function( $a, $b ) {
+            return
+                strtotime($a->getElementsByTagName('pubDate')->item(0)->nodeValue)
+                -
+                strtotime($b->getElementsByTagName('pubDate')->item(0)->nodeValue);
+        });
+
+        // latest first
+        $sorted = array_reverse($sorted);
+
+        // "replace" old nodes:
+        foreach( $sorted as $node ) {
+            $items->item(0)->parentNode->appendChild($node);
+        }
+    }
 }
 
 class Dir_Podcast extends Podcast
@@ -1447,6 +1474,9 @@ class SettingsHandler
 
         if(!defined('ITUNES_CATEGORIES'))
             define('ITUNES_CATEGORIES', '');
+
+        if(!defined('SORT_ITEMS_BY_PUBDATE'))
+            define('SORT_ITEMS_BY_PUBDATE', false);
 
         if(!defined('LONG_TITLES'))
             define('LONG_TITLES', false);
