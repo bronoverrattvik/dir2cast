@@ -663,7 +663,7 @@ class Media_RSS_Item extends RSS_File_Item {
         $html = str_replace('<hr />', '---', $html);
 
         // lists will be stripped, replace with bullet chars instead (suitable for plaintext)
-        $html = str_replace('<li>', '<li>•', $html);
+        $html = str_replace('<li>', '<li>• ', $html);
 
         // remove extra newline for lists
         $html = str_replace("ul>\n", 'ul>', $html);
