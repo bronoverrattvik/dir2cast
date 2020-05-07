@@ -656,12 +656,33 @@ class Media_RSS_Item extends RSS_File_Item {
 
     public function getDescriptionAsPlainText()
     {
-        return htmlspecialchars_decode(strip_tags($this->getDescriptionAsHTML()));
+        // fetch description as html to remove markdown unsuitable for plaintext
+        $html = Markdown::defaultTransform($this->getDescription());
+
+        // hr will be stripped, replace with lines instead (suitable for plaintext)
+        $html = str_replace('<hr />', '---', $html);
+
+        // lists will be stripped, replace with bullet chars instead (suitable for plaintext)
+        $html = str_replace('<li>', '<li>•', $html);
+
+        // remove extra newline for lists
+        $html = str_replace("ul>\n", 'ul>', $html);
+
+        return htmlspecialchars_decode(strip_tags($html));
     }
 
     public function getDescriptionAsHTML()
     {
-        return Markdown::defaultTransform($this->getDescription());
+        $html = Markdown::defaultTransform($this->getDescription());
+
+        // remove double newlines (since acast seems to run nl2br on already html formatted description o_O)
+        $html = str_replace("\n\n", "\n", $html);
+
+        // remove newlines in lists (because acast)
+        $html = str_replace("li>\n", 'li>', $html);
+        $html = str_replace("<ul>\n", '<ul>', $html);
+
+        return $html;
     }
 
     public function getSummary()
