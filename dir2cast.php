@@ -70,27 +70,6 @@ set_exception_handler( array( 'ErrorHandler', 'handle_exception') );
 // Best do everything in UTC.
 date_default_timezone_set( 'UTC' );
 
-/* EXTERNALS ********************************************/
-
-spl_autoload_register(function ($class_name)
-{
-    switch(strtolower($class_name))
-    {
-        case 'getid3':
-
-            ErrorHandler::prime('getid3');
-            if(file_exists('getID3/getid3.php'))
-                require_once('getID3/getid3.php');
-            else
-                require_once('getid3/getid3.php');
-            ErrorHandler::defuse();
-            break;
-
-        default:
-            require_once $class_name . '.php';
-    }
-});
-
 /* CLASSES **********************************************/
 
 abstract class GetterSetter {
@@ -107,7 +86,7 @@ abstract class GetterSetter {
     public function __call($method, $params)
     {
         $var_name = substr($method, 3);
-        $var_name{0} = strtolower($var_name{0});
+        $var_name[0] = strtolower($var_name[0]);
         switch(strtolower(substr($method, 0, 3)))
         {
             case 'get':
