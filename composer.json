@@ -1,6 +1,7 @@
 {
   "require": {
     "php": "^7",
-    "michelf/php-markdown": "^1.8"
+    "michelf/php-markdown": "^1.9",
+    "james-heinrich/getid3": "^1.9"
   }
 }
